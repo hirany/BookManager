@@ -1,0 +1,17 @@
+syntax = "proto3";
+package lend;
+
+message LendRequest {
+	int32 bookNumber = 1;
+	int32 studentNumber = 2;
+}
+
+message LendResponse {
+	int32 bookNumber = 1;
+	int32 studentNumber = 2;
+}
+
+service LendService {
+	rpc Lend (LendRequest)
+		returns (LendResponse);
+}
