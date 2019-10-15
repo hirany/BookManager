@@ -5,7 +5,7 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"log"
-	"os"
+	_ "os"
 )
 
 type userTable struct {
@@ -20,9 +20,12 @@ var db *sql.DB
 
 func init() {
 	var err error
-	user := os.Getenv("PSQLUSER")
-	dbName := os.Getenv("PSQLDB")
-	pass := os.Getenv("PSQLPASS")
+	// user := os.Getenv("PSQLUSER")
+	user := "postgres"
+	// dbName := os.Getenv("PSQLDB")
+	dbName := "bookstore"
+	// pass := os.Getenv("PSQLPASS")
+	pass := "slp2293kbit"
 	db, err = sql.Open("postgres", fmt.Sprintf("user=%s dbname=%s password=%s sslmode=disable", user, dbName, pass))
 	if err != nil {
 		log.Fatal(err)

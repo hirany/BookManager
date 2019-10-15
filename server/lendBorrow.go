@@ -25,6 +25,7 @@ func (s *lendMemory) Lend(ctx context.Context, req *pb.LendRequest) (*pb.LendRes
 		bn.insertBookData()
 	}
 	insertReceiptData(bn, sn)
+	fmt.Println("Lending information")
 	fmt.Println("student number :", sn)
 	fmt.Println("book number    :", bn)
 	return &pb.LendResponse{BookNumber: bn.id, StudentNumber: sn.id}, nil

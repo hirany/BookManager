@@ -11,15 +11,10 @@ import (
 
 func main() {
 
-	var bn int32
-	var sn int32
-
 	for {
-		fmt.Print("student number: ")
-		fmt.Scan(&sn)
-		fmt.Print("book number: ")
-		fmt.Scan(&bn)
+		sw, sn, bn := input()
 
+		fmt.Println(sw)
 		connection, err := grpc.Dial("localhost:8090", grpc.WithInsecure())
 		if err != nil {
 			log.Fatal(err)
@@ -41,4 +36,14 @@ func main() {
 			fmt.Println("student number : ", response.GetStudentNumber())
 		}
 	}
+}
+
+func input() (sw, sn, bn int32) {
+	fmt.Println("lend: 1, borrow: 2")
+	fmt.Scan(&sw)
+	fmt.Print("student number: ")
+	fmt.Scan(&sn)
+	fmt.Print("book number: ")
+	fmt.Scan(&bn)
+	return
 }
