@@ -25,8 +25,8 @@ var _ = math.Inf
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type LendRequest struct {
-	BookNumber           int32    `protobuf:"varint,1,opt,name=bookNumber,proto3" json:"bookNumber,omitempty"`
-	StudentNumber        int32    `protobuf:"varint,2,opt,name=studentNumber,proto3" json:"studentNumber,omitempty"`
+	BookNumber           int64    `protobuf:"varint,1,opt,name=bookNumber,proto3" json:"bookNumber,omitempty"`
+	StudentNumber        int64    `protobuf:"varint,2,opt,name=studentNumber,proto3" json:"studentNumber,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -57,14 +57,14 @@ func (m *LendRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_LendRequest proto.InternalMessageInfo
 
-func (m *LendRequest) GetBookNumber() int32 {
+func (m *LendRequest) GetBookNumber() int64 {
 	if m != nil {
 		return m.BookNumber
 	}
 	return 0
 }
 
-func (m *LendRequest) GetStudentNumber() int32 {
+func (m *LendRequest) GetStudentNumber() int64 {
 	if m != nil {
 		return m.StudentNumber
 	}
@@ -72,8 +72,8 @@ func (m *LendRequest) GetStudentNumber() int32 {
 }
 
 type LendResponse struct {
-	BookNumber           int32    `protobuf:"varint,1,opt,name=bookNumber,proto3" json:"bookNumber,omitempty"`
-	StudentNumber        int32    `protobuf:"varint,2,opt,name=studentNumber,proto3" json:"studentNumber,omitempty"`
+	BookNumber           int64    `protobuf:"varint,1,opt,name=bookNumber,proto3" json:"bookNumber,omitempty"`
+	StudentNumber        int64    `protobuf:"varint,2,opt,name=studentNumber,proto3" json:"studentNumber,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -104,14 +104,14 @@ func (m *LendResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_LendResponse proto.InternalMessageInfo
 
-func (m *LendResponse) GetBookNumber() int32 {
+func (m *LendResponse) GetBookNumber() int64 {
 	if m != nil {
 		return m.BookNumber
 	}
 	return 0
 }
 
-func (m *LendResponse) GetStudentNumber() int32 {
+func (m *LendResponse) GetStudentNumber() int64 {
 	if m != nil {
 		return m.StudentNumber
 	}

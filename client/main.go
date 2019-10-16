@@ -38,7 +38,7 @@ func main() {
 	}
 }
 
-func input() (sw, sn, bn int32) {
+func input() (sw, sn, bn int64) {
 	fmt.Println("lend: 1, borrow: 2")
 	fmt.Scan(&sw)
 	fmt.Print("student number: ")

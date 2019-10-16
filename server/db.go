@@ -9,11 +9,11 @@ import (
 )
 
 type userTable struct {
-	id int32
+	id int64
 }
 
 type bookTable struct {
-	id int32
+	id int64
 }
 
 var db *sql.DB
@@ -33,7 +33,7 @@ func init() {
 }
 
 func (ut userTable) existUserData() bool {
-	var id int32
+	var id int64
 	stmt := fmt.Sprintf("select userid from usertable where userid = %d", ut.id)
 	err := db.QueryRow(stmt).Scan(&id)
 	if err != nil {
@@ -43,7 +43,7 @@ func (ut userTable) existUserData() bool {
 }
 
 func (bt bookTable) existBookData() bool {
-	var id int32
+	var id int64
 	stmt := fmt.Sprintf("select bookid from booktable where bookid = %d", bt.id)
 	err := db.QueryRow(stmt).Scan(&id)
 	if err != nil {
