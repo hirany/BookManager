@@ -1,59 +1,64 @@
 package main
 
 import (
-	pb "../pb"
-	"context"
 	"fmt"
-	"google.golang.org/grpc"
+	"github.com/gin-gonic/gin"
 	"log"
-	"time"
+	"strconv"
 )
 
+type Book struct {
+	Title string
+}
+
 func main() {
+	router := gin.Default()
+	router.LoadHTMLGlob("templates/*.html")
 
-	for {
-		var sn, bn int64
-		var tmp int32
-		sw := true
-		fmt.Print("student number: ")
-		fmt.Scan(&sn)
-		fmt.Print("lend: 1, borrow: 2 ")
-		fmt.Scan(&tmp)
-		if tmp != 1 {
-			sw = false
-		}
-		fmt.Print("book number: ")
-		fmt.Scan(&bn)
+	var tmp string
+	userName := "gest user"
+	var userID int64
+	var book []Book
+	var bookID int64
+	var lendOrBorrow string
+	var sw bool
+	var err error
+	var title string
 
-		connection, err := grpc.Dial("localhost:8090", grpc.WithInsecure())
+	router.GET("/", func(ctx *gin.Context) {
+		ctx.HTML(200, "index.html", gin.H{})
+	})
+
+	router.POST("/begin", func(ctx *gin.Context) {
+		userName = ctx.PostForm("userName")
+		userID, err = strconv.ParseInt(userName, 10, 64)
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer connection.Close()
+		lendOrBorrow = ctx.PostForm("sw")
+		sw = lendOrBorrow == "lend"
+		ctx.Redirect(302, "/rental")
+	})
 
-		client := pb.NewLendServiceClient(connection)
+	router.GET("/rental", func(ctx *gin.Context) {
+		fmt.Println(book)
+		ctx.HTML(200, "rental.html", gin.H{
+			"userName": userName,
+			"book":     book,
+		})
+	})
 
-		context, cancel := context.WithTimeout(context.Background(), time.Second)
-		defer cancel()
-
-		response, err := client.Lend(context, &pb.LendRequest{BookNumber: bn, StudentNumber: sn, Sw: sw})
-		var str string
-		if sw {
-			str = "Rental "
-		} else {
-			str = "Return "
-		}
+	router.POST("/addbook", func(ctx *gin.Context) {
+		tmp = ctx.PostForm("bookName")
+		bookID, err = strconv.ParseInt(tmp, 10, 64)
 		if err != nil {
-			fmt.Println(str + " was failed")
 			log.Fatal(err)
-		} else {
-			fmt.Println(str + "was successful")
-			fmt.Println("student number : ", response.GetStudentNumber())
-			title, err := janToTitle(bn)
-			if err != nil {
-				log.Fatal(err)
-			}
-			fmt.Println("book title    : ", title)
 		}
-	}
+		title = client(userID, bookID, sw)
+		fmt.Println(title)
+		book = append(book, Book{Title: title})
+		ctx.Redirect(302, "/rental")
+	})
+
+	router.Run()
 }
