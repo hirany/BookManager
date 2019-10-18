@@ -5,7 +5,7 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"log"
-	_ "os"
+	"os"
 )
 
 type userTable struct {
@@ -20,12 +20,9 @@ var db *sql.DB
 
 func init() {
 	var err error
-	// user := os.Getenv("PSQLUSER")
-	user := "postgres"
-	// dbName := os.Getenv("PSQLDB")
-	dbName := "bookstore"
-	// pass := os.Getenv("PSQLPASS")
-	pass := "slp2293kbit"
+	user := os.Getenv("PSQLUSER")
+	dbName := os.Getenv("PSQLDB")
+	pass := os.Getenv("PSQLPASS")
 	db, err = sql.Open("postgres", fmt.Sprintf("user=%s dbname=%s password=%s sslmode=disable", user, dbName, pass))
 	if err != nil {
 		log.Fatal(err)
@@ -69,7 +66,7 @@ func insertReceiptData(bt bookTable, ut userTable) {
 }
 
 func deleteReceiptData(bt bookTable, ut userTable) {
-	stmt := fmt.Sprintf("delete from receipt where userid = %d and bookid = %d;", ut.id, bt.id)
+	stmt := fmt.Sprintf("delete from receipt where userid = (%d) and bookid = (%d);", ut.id, bt.id)
 	_, err := db.Exec(stmt)
 	if err != nil {
 		log.Fatal(err)

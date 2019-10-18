@@ -12,7 +12,18 @@ import (
 func main() {
 
 	for {
-		sw, sn, bn := input()
+		var sn, bn int64
+		var tmp int32
+		sw := true
+		fmt.Print("student number: ")
+		fmt.Scan(&sn)
+		fmt.Print("lend: 1, borrow: 2 ")
+		fmt.Scan(&tmp)
+		if tmp != 1 {
+			sw = false
+		}
+		fmt.Print("book number: ")
+		fmt.Scan(&bn)
 
 		fmt.Println(sw)
 		connection, err := grpc.Dial("localhost:8090", grpc.WithInsecure())
@@ -26,7 +37,7 @@ func main() {
 		context, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 
-		response, err := client.Lend(context, &pb.LendRequest{BookNumber: bn, StudentNumber: sn})
+		response, err := client.Lend(context, &pb.LendRequest{BookNumber: bn, StudentNumber: sn, Sw: sw})
 		if err != nil {
 			fmt.Println("NG")
 			log.Fatal(err)
@@ -36,14 +47,4 @@ func main() {
 			fmt.Println("student number : ", response.GetStudentNumber())
 		}
 	}
-}
-
-func input() (sw, sn, bn int64) {
-	fmt.Println("lend: 1, borrow: 2")
-	fmt.Scan(&sw)
-	fmt.Print("student number: ")
-	fmt.Scan(&sn)
-	fmt.Print("book number: ")
-	fmt.Scan(&bn)
-	return
 }

@@ -4,11 +4,13 @@ package lend;
 message LendRequest {
 	int64 bookNumber = 1;
 	int64 studentNumber = 2;
+	bool sw = 3;
 }
 
 message LendResponse {
 	int64 bookNumber = 1;
 	int64 studentNumber = 2;
+	bool sw = 3;
 }
 
 service LendService {
