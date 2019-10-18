@@ -25,7 +25,6 @@ func main() {
 		fmt.Print("book number: ")
 		fmt.Scan(&bn)
 
-		fmt.Println(sw)
 		connection, err := grpc.Dial("localhost:8090", grpc.WithInsecure())
 		if err != nil {
 			log.Fatal(err)
@@ -38,13 +37,23 @@ func main() {
 		defer cancel()
 
 		response, err := client.Lend(context, &pb.LendRequest{BookNumber: bn, StudentNumber: sn, Sw: sw})
+		var str string
+		if sw {
+			str = "Rental "
+		} else {
+			str = "Return "
+		}
 		if err != nil {
-			fmt.Println("NG")
+			fmt.Println(str + " was failed")
 			log.Fatal(err)
 		} else {
-			fmt.Println("OK")
-			fmt.Println("book number    : ", response.GetBookNumber())
+			fmt.Println(str + "was successful")
 			fmt.Println("student number : ", response.GetStudentNumber())
+			title, err := janToTitle(bn)
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Println("book title    : ", title)
 		}
 	}
 }
