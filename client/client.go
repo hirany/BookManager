@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func client(sn, bn int64, sw bool) string {
+func client(sn, bn int64, sw bool) (string, error) {
 
 	var title string
 	var err error
@@ -39,8 +39,8 @@ func client(sn, bn int64, sw bool) string {
 		fmt.Println("student number : ", response.GetStudentNumber())
 		title, err = janToTitle(bn)
 		if err != nil {
-			log.Fatal(err)
+			return "", err
 		}
 	}
-	return title
+	return title, nil
 }

@@ -52,11 +52,28 @@ func main() {
 		tmp = ctx.PostForm("bookName")
 		bookID, err = strconv.ParseInt(tmp, 10, 64)
 		if err != nil {
-			log.Fatal(err)
+			book = append(book, Book{Title: "error"})
+			ctx.Redirect(302, "/rental")
 		}
-		title = client(userID, bookID, sw)
+		title, err = client(userID, bookID, sw)
+		if err != nil {
+			if len(book) == 0 {
+				book = append(book, Book{Title: "error"})
+			} else if book[len(book)-1].Title == "error" {
+				book[len(book)-1].Title = "error"
+			} else {
+				book = append(book, Book{Title: "error"})
+			}
+		} else {
+			if len(book) == 0 {
+				book = append(book, Book{Title: title})
+			} else if book[len(book)-1].Title == "error" {
+				book[len(book)-1].Title = title
+			} else {
+				book = append(book, Book{Title: title})
+			}
+		}
 		fmt.Println(title)
-		book = append(book, Book{Title: title})
 		ctx.Redirect(302, "/rental")
 	})
 
